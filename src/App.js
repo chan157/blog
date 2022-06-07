@@ -5,11 +5,14 @@ import { useState } from 'react';
 function App() {
 
   let post = '아래쪽'; //서버에서 데이터 가져왔다고 하자
-  let [title, changeTitle] = useState(['남자 코트 추천', '강남 우동 맛집', '파이썬 독학']);
-  let [thumbsUp, thumbsFunc] = useState(0);
+  let [title, setTitle] = useState(['남자 코트 추천', '강남 우동 맛집', '파이썬 독학']);
+  let [thumbsUp, setThumbs] = useState([0, 0, 0]);
+  let [modal, setModal] = useState(false);
 
-  function incLike() {
-    thumbsFunc(thumbsUp + 1)
+  function incLike(i) {
+    let thumbsCopy = [...thumbsUp];
+    thumbsCopy[i] ++
+    setThumbs(thumbsCopy)
   }
   return (
     <div className="App">
@@ -20,30 +23,32 @@ function App() {
       <button onClick={()=>{
             let titleCopy = [...title];
             titleCopy[0] = '여자 코트 추천';
-            changeTitle(titleCopy)
+            setTitle(titleCopy)
           }}>글수정</button>
 
       <button onClick={()=>{
         let titleCopy = [...title].sort()
-        changeTitle(titleCopy)
+        setTitle(titleCopy)
       }}>가나다정렬
       </button>
 
-      <div className="list">
-        <h4> { title[0] } <span onClick={incLike}>👍</span> { thumbsUp } </h4>
-        <p>2월 17일 발행</p>
-      </div>
-
-      <div className="list">
-        <h4>{ title[1] }</h4>
-        <p>2월 17일 발행</p>
-      </div>
-      <div className="list">
-        <h4>{ title[2] }</h4>
-        <p>2월 17일 발행</p>
-      </div>
+      {
+        title.map((_, i) => {
+          return (
+            <div className="list" key={i}>
+              <h4 onClick={()=>{ setModal(!modal)}}>
+                { title[i] } 
+                <span onClick={() => incLike(i) }>👍</span> { thumbsUp[i] }
+              </h4>
+              <p>3월 10일 발행</p>
+            </div>
+          )
+        })
+      }
       
-      <Modal></Modal>
+      {
+        modal ? <Modal/> : null
+      }
 
     </div>
   );
