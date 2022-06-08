@@ -8,7 +8,8 @@ function App() {
   let [title, setTitle] = useState(['남자 코트 추천', '강남 우동 맛집', '파이썬 독학']);
   let [thumbsUp, setThumbs] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
-  let [titleNumber, setTitleNumber] = useState(0)
+  let [titleNumber, setTitleNumber] = useState(0);
+  let [inputValue, changeInputValue] = useState('');
 
   function incLike(i) {
     let thumbsCopy = [...thumbsUp];
@@ -40,15 +41,24 @@ function App() {
             <div className="list" key={i}>
               <h4 onClick={()=>{ 
                 // setModal(!modal)
-                setModal(true)
-                setTitleNumber(i)
+                setModal(true);
+                setTitleNumber(i);
                 }}>
                   { title[i] } 
-                  <span onClick={() => {
-                    incLike(i)
+                  <span onClick={(e) => {
+                    e.stopPropagation();
+                    incLike(i);
                   }}>👍</span> { thumbsUp[i] }
               </h4>
               <p>3월 10일 발행</p>
+              <button onClick={(i)=>{
+                let copyTitle = [...title]
+                copyTitle.splice(i, 1)
+                let copyThumbs = [...thumbsUp]
+                copyThumbs.splice(i, 1)
+                setTitle(copyTitle)
+                setThumbs(copyThumbs)
+              }}>삭제 버튼</button>
             </div>
           )
         })
@@ -58,6 +68,18 @@ function App() {
         modal ? <Modal color={'skyblue'} title={title} setTitle={setTitle} titleNumber={titleNumber}/> : null
       }
 
+      <input type="text" onChange={(e)=>{ 
+        changeInputValue(e.target.value);
+        console.log(inputValue)
+      }}></input>
+      <button onClick={()=>{
+        let copyTitle = [...title]
+        copyTitle.unshift(inputValue)
+        let copyThumbs = [...thumbsUp]
+        copyThumbs.unshift(0)
+        setTitle(copyTitle)
+        setThumbs(copyThumbs)
+      }}>발행</button>
     </div>
   );
 }
