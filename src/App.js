@@ -8,6 +8,7 @@ function App() {
   let [title, setTitle] = useState(['남자 코트 추천', '강남 우동 맛집', '파이썬 독학']);
   let [thumbsUp, setThumbs] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
+  let [titleNumber, setTitleNumber] = useState(0)
 
   function incLike(i) {
     let thumbsCopy = [...thumbsUp];
@@ -37,11 +38,15 @@ function App() {
         title.map((_, i) => {
           return (
             <div className="list" key={i}>
-              <h4 onClick={()=>{ setModal(!modal)}}>
-                { title[i] } 
-                <span onClick={() => {
-                  incLike(i)
-                }}>👍</span> { thumbsUp[i] }
+              <h4 onClick={()=>{ 
+                // setModal(!modal)
+                setModal(true)
+                setTitleNumber(i)
+                }}>
+                  { title[i] } 
+                  <span onClick={() => {
+                    incLike(i)
+                  }}>👍</span> { thumbsUp[i] }
               </h4>
               <p>3월 10일 발행</p>
             </div>
@@ -50,7 +55,7 @@ function App() {
       }
       
       {
-        modal ? <Modal color={'skyblue'} title={title} setTitle={setTitle}/> : null
+        modal ? <Modal color={'skyblue'} title={title} setTitle={setTitle} titleNumber={titleNumber}/> : null
       }
 
     </div>
@@ -60,7 +65,7 @@ function App() {
 function Modal(props){
   return (
     <div className="modal" style={{background : props.color}}>
-        <h4>{props.title[0]}</h4>
+        <h4>{props.title[props.titleNumber]}</h4>
         <p>날짜</p>
         <p>상세내용</p>
         <button onClick={()=>{
