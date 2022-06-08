@@ -14,6 +14,7 @@ function App() {
     thumbsCopy[i] ++
     setThumbs(thumbsCopy)
   }
+
   return (
     <div className="App">
       <div className="black-nav">
@@ -38,7 +39,9 @@ function App() {
             <div className="list" key={i}>
               <h4 onClick={()=>{ setModal(!modal)}}>
                 { title[i] } 
-                <span onClick={() => incLike(i) }>👍</span> { thumbsUp[i] }
+                <span onClick={() => {
+                  incLike(i)
+                }}>👍</span> { thumbsUp[i] }
               </h4>
               <p>3월 10일 발행</p>
             </div>
@@ -47,19 +50,24 @@ function App() {
       }
       
       {
-        modal ? <Modal/> : null
+        modal ? <Modal color={'skyblue'} title={title} setTitle={setTitle}/> : null
       }
 
     </div>
   );
 }
 
-function Modal(){
+function Modal(props){
   return (
-    <div className="modal">
-        <h4>제목</h4>
+    <div className="modal" style={{background : props.color}}>
+        <h4>{props.title[0]}</h4>
         <p>날짜</p>
         <p>상세내용</p>
+        <button onClick={()=>{
+          let copy = [...props.title]
+          copy[0] = "여자 코트 추천"
+          props.setTitle(copy)
+        }}>글수정</button>
     </div>
   )
 }
